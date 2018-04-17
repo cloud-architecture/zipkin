@@ -33,6 +33,7 @@
     <main.signature.artifact>java18</main.signature.artifact>
     <jmh.version>1.20</jmh.version>
     <libthrift.version>0.11.0</libthrift.version>
+    <protobuf.version>3.5.1</protobuf.version>
   </properties>
 
   <dependencies>
@@ -80,9 +81,22 @@
       <groupId>io.zipkin.java</groupId>
       <artifactId>zipkin-server</artifactId>
     </dependency>
+
+    <dependency>
+      <groupId>com.google.protobuf</groupId>
+      <artifactId>protobuf-java</artifactId>
+      <version>${protobuf.version}</version>
+    </dependency>
   </dependencies>
 
   <build>
+    <extensions>
+      <extension>
+        <groupId>kr.motd.maven</groupId>
+        <artifactId>os-maven-plugin</artifactId>
+        <version>1.5.0.Final</version>
+      </extension>
+    </extensions>
     <plugins>
       <plugin>
         <inherited>true</inherited>
@@ -117,6 +131,23 @@
         <artifactId>maven-install-plugin</artifactId>
         <configuration>
           <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.xolstice.maven.plugins</groupId>
+        <artifactId>protobuf-maven-plugin</artifactId>
+        <version>0.5.1</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>test-compile</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <protocArtifact>
+            com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
+          </protocArtifact>
         </configuration>
       </plugin>
       <plugin>
